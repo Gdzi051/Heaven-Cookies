@@ -93,6 +93,12 @@ const f=km*KM,o={id:Date.now().toString(36),t:Date.now(),items:lines(),sub:sub()
 db.collection('orders').add(o).then(r=>{try{localStorage.setItem('hc_my',r.id)}catch(e){}watchMy(r.id);cart={};closeCart();menuView();scrollTo(0,0)}).catch(()=>{$('#er').textContent='Não foi possível enviar o pedido. Tente novamente.'})}
 function renderMyOrder(){const el=$('#my');if(!el)return;const o=MYORD;el.innerHTML=o?`<div class="track"><b>Seu pedido: ${ST[o.st]}</b><div style="color:var(--mut);font-size:13px;margin-top:4px">${o.items.map(l=>l.q+'× '+esc(l.n)).join(', ')} · ${fmt(o.total)}</div></div>`:''}
 /* ---------- ADMIN ---------- */
+function adminView(){if(!authed()){$('#app').innerHTML=`<div class="wrap" style="padding-top:40px"><h1>Entrar</h1><label>E-mail</label><input id="em" type="email" autocomplete="username"><label>Senha</label><input id="pw" type="password" autocomplete="current-password"><div class="err" id="er"></div><button class="btn" onclick="login()">Entrar</button><button class="btn g" onclick="location.hash=''">Voltar ao cardápio</button></div>`;return}
+const os=O(),nn=os.filter(o=>o.st==='novo').length;
+$('#app').innerHTML=`<div class="wrap" style="padding-top:16px"><div style="display:flex;justify-content:space-between;align-items:center"><h1>Painel</h1><div style="display:flex;gap:8px"><button class="btn g s" onclick="location.hash=''">Ver cardápio</button><button class="btn g s" onclick="logout()">Sair</button></div></div>
+<button class="btn ${soundOn?'ok':''}" onclick="enableSound()">${soundOn?'Alerta sonoro ativado':'Ativar alerta sonoro'}</button>
+<div class="tabs"><button class="btn g s" style="${adminTab=='ped'?'border-color:var(--br)':''}" onclick="adminTab='ped';adminView()">Pedidos${nn?` (${nn} novo${nn>1?'s':''})`:''}</button><button class="btn g s" style="${adminTab=='prod'?'border-color:var(--br)':''}" onclick="adminTab='prod';adminView()">Produtos</button></div>
+${adminTab=='ped'?(os.length?os.map(orderHTML).join(''):'<p style="color:var(--mut)">Nenhum pedido ainda. Eles aparecem aqui assim que chegarem.</p>'):prodHTML()}</div>`}
 function login(){auth.signInWithEmailAndPassword($('#em').value.trim(),$('#pw').value).catch(()=>{$('#er').textContent='E-mail ou senha incorretos.'})}
 function logout(){auth.signOut()}
 function orderHTML(o){const t=new Date(o.t).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
