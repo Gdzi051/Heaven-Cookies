@@ -64,7 +64,7 @@ addEventListener('hashchange',route);
 function menuView(){
 const ps=P(),cats=[...new Set(ps.map(p=>p.cat))];
 $('#app').innerHTML=`<div class="top"><div class="wrap"><img src="${LOGO}" alt="Heaven Cookies"><div><h1>Heaven Cookies</h1><p>Um pedacinho do céu em cada mordida</p></div></div></div>
-<div class="wrap"><div class="info"><span><b>Entrega:</b> seg a sex pela 99 (frete a combinar) · sáb e dom até ${MAXKM} km</span><span><b>Retirada:</b> ${LOC}</span><span>Pedido mínimo <b>${fmt(MIN)}</b></span><span>Pix, dinheiro e cartão</span></div><div id="my"></div></div>
+<div class="wrap"><div class="info"><span><b>Entrega:</b> frete a combinar</span><span><b>Retirada</b> no local</span><span>Pedido mínimo <b>${fmt(MIN)}</b></span><span>Pix, dinheiro e cartão</span></div><div id="my"></div></div>
 <div class="chips"><div class="wrap">${cats.map(c=>`<a href="#c-${esc(c)}" onclick="document.getElementById('c-${esc(c)}').scrollIntoView({behavior:'smooth'});return false">${esc(c)}</a>`).join('')}</div></div>
 <div class="wrap">${cats.map(c=>`<h2 id="c-${esc(c)}">${esc(c)}</h2>`+ps.filter(p=>p.cat===c).map(itemHTML).join('')).join('')}</div>
 <div class="foot">© Heaven Cookies · <a href="#admin">Área do dono</a></div><div class="bar" id="bar"></div><div class="sh" id="sh"><div class="pn" id="pn"></div></div>`;
